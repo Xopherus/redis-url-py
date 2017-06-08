@@ -17,12 +17,12 @@ class RedisUrlTestSuite(unittest.TestCase):
 
     def test_redis_parse_remote(self):
         self.assertEqual(
-            redis_url.parse('redis://138913@ec2-192-168-1-1.compute-1.amazon.aws.com:30001?cluster=false'),
+            redis_url.parse('redis://:138913@ec2-192-168-1-1.compute-1.amazon.aws.com:30001?cluster=false'),
             {
-                'host': '138913@ec2-192-168-1-1.compute-1.amazon.aws.com',
+                'host': 'ec2-192-168-1-1.compute-1.amazon.aws.com',
                 'port': 30001,
                 'db': 0,
-                'password': None
+                'password': '138913'
             }
         )
 
@@ -43,6 +43,10 @@ class RedisUrlTestSuite(unittest.TestCase):
                 'host': 'localhost',
                 'port': 6379,
                 'password': None,
-                'skip_full_coverage_check': True
+                'skip_full_coverage_check': True,
             }
         )
+
+
+if __name__ == '__main__':
+    unittest.main()

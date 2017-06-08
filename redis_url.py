@@ -3,7 +3,6 @@ try:
 except ImportError:
     import urllib.parse as urlparse
 
-
 def parse(url):
     """Parses a Redis URL."""
 
@@ -16,16 +15,18 @@ def parse(url):
     }
 
     # parse options from url
-    for option in url.query.split('&'):
-        option = option.split('=')
-        key, val = option[0].lower(), option[1]
+    options = urlparse.parse_qs(url.query)
+
+    # if cluster mode is enabled, do not add db to config (unsupported)
+    cluster_enabled = options.pop('cluster', ['false'])[0]
+
+    if cluster_enabled == 'false':
+        config['db'] = int(url.path[1:] or 0)
+
+    for key, val in options.iteritems():
+        config[key] = val[0] if len(val) == 1 else val
 
         if key == 'skip_full_coverage_check':
-            config[key] = True if val.lower() == 'true' else False
-        else:
-            config[key] = val
-
-    if 'cluster' not in options:
-        config['db'] = int(url.path[1:] or 0)
+            config[key] = True if config[key] == 'true' else False
 
     return config
