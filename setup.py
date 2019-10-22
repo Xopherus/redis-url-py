@@ -9,7 +9,7 @@ DESCRIPTION = open(
 
 setup(
     name='redis-url-py',
-    version='0.0.3',
+    version='0.0.4',
     url='https://github.com/Xopherus/redis-url-py',
     license=LICENSE,
     author='Chris Raborg',
@@ -17,5 +17,6 @@ setup(
     description='Use Redis URLs in your Python applications',
     long_description=DESCRIPTION,
     py_modules=['redis_url'],
+    install_requires = ["future"],
     zip_safe=False,
 )
